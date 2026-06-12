@@ -413,6 +413,30 @@ main:focus {
   background-size: 22px 22px;
 }
 
+/* No-JS mobile: the nav menu renders expanded (see section 4), so a fixed
+   header would cover the top of the hero. Keep the header in normal flow so
+   the menu pushes content down instead. JS present (.js-enabled on <html>
+   or <body>) collapses the menu, so the fixed header is safe again. Desktop
+   (≥720px) keeps the base fixed header — the menu is a single row there. */
+@media (max-width: 719.98px) {
+  .site-header {
+    position: static;
+  }
+
+  .js-enabled .site-header {
+    position: fixed;
+  }
+
+  /* In-flow header already occupies its own height — drop the compensation */
+  .hero {
+    padding-top: 3rem;
+  }
+
+  .js-enabled .hero {
+    padding-top: calc(var(--header-h) + 3rem);
+  }
+}
+
 /* Fade the grid toward the edges so type sits on calm ground */
 .hero::after {
   content: "";
