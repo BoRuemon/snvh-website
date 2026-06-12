@@ -353,20 +353,24 @@ main:focus {
   color: var(--text);
 }
 
+/* Active section indicator — mirrors hover color + adds gold underline */
+.site-nav .nav-menu a.active {
+  color: var(--text);
+  border-bottom: 1px solid var(--gold);
+  padding-bottom: 1px;
+}
+
 .site-nav .btn {
   padding: 0.7em 1.2em;
   font-size: 0.72rem;
 }
 
-/* JS present → collapse menu on mobile; .nav-open re-opens it.
-   .nav-open may be applied by JS to <body>, .site-header, or .nav-menu. */
+/* JS present → collapse menu on mobile; body.nav-open re-opens it. */
 .js-enabled .nav-menu {
   display: none;
 }
 
-.js-enabled .nav-open .nav-menu,
-.js-enabled.nav-open .nav-menu,
-.js-enabled .nav-menu.nav-open {
+.js-enabled .nav-open .nav-menu {
   display: flex;
 }
 
