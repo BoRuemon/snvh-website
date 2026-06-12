@@ -1,0 +1,1208 @@
+/* ==========================================================================
+   SNVH — Industrial Precision design system
+   Style A: dark charcoal, engineering grid, amber-gold accents.
+   Single font family: Archivo (weights carry hierarchy).
+   Organization: tokens → reset → base → utilities → header → hero →
+   sections (document order) → footer. Mobile-first; breakpoints 720 / 1024.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Tokens
+   -------------------------------------------------------------------------- */
+:root {
+  --bg: #141414;          /* page background */
+  --bg-raised: #1d1d1d;   /* cards */
+  --line: #2a2a2a;        /* borders, dividers, grid lines */
+  --gold: #F0B544;        /* accent: CTAs, numbers, eyebrows, tags */
+  --gold-bright: #f7c768; /* hover state of gold surfaces */
+  --gold-dim: rgba(240, 181, 68, 0.45);
+  --grid-line: rgba(240, 181, 68, 0.05);
+  --brown: #5C2C1F;       /* brand brown — sparing use */
+  --text: #f2f0ec;
+  --text-dim: #9a9a94;
+
+  --font-stack: "Archivo", system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+
+  --container: 1140px;
+  --gutter: clamp(1.25rem, 5vw, 2.5rem);
+  --header-h: 4rem;
+
+  --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* --------------------------------------------------------------------------
+   2. Reset / base
+   -------------------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: dark;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-stack);
+  font-size: 1rem;
+  line-height: 1.6;
+  font-weight: 400;
+  counter-reset: section;
+  overflow-x: hidden; /* belt-and-braces against sub-pixel overflow */
+}
+
+h1, h2, h3, p, ol, ul, address, figure {
+  margin: 0;
+}
+
+img, iframe {
+  max-width: 100%;
+  border: 0;
+}
+
+a {
+  color: inherit;
+}
+
+::selection {
+  background: var(--brown);
+  color: var(--text);
+}
+
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+
+main:focus {
+  outline: none; /* programmatic focus target (#top, tabindex="-1") */
+}
+
+[id] {
+  scroll-margin-top: calc(var(--header-h) + 1rem);
+}
+
+/* --------------------------------------------------------------------------
+   3. Utilities
+   -------------------------------------------------------------------------- */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 1000; /* above .site-header (z-index: 100) */
+  padding: 0.8em 1.4em;
+  background: var(--gold);
+  color: #141414;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transform: translateY(calc(-100% - 1.5rem));
+}
+
+.skip-link:focus {
+  transform: none;
+}
+
+/* Buttons — shared CTA language: sharp, uppercase, letter-spaced */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55em;
+  padding: 1em 1.7em;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color 0.2s var(--ease-out),
+              border-color 0.2s var(--ease-out),
+              color 0.2s var(--ease-out),
+              transform 0.2s var(--ease-out);
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn-primary {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: #141414;
+}
+
+.btn-primary:hover {
+  background: var(--gold-bright);
+  border-color: var(--gold-bright);
+}
+
+.btn-secondary {
+  border-color: #3a3a3a;
+  color: var(--text);
+}
+
+.btn-secondary:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+/* Status tags — chip language shared by R&D + Industries */
+.status-tag {
+  display: inline-block;
+  padding: 0.45em 0.9em;
+  border-radius: 2px;
+  font-size: 0.66rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.status-development {
+  border: 1px solid var(--gold-dim);
+  color: var(--gold);
+}
+
+.status-proven {
+  background: var(--gold);
+  color: #141414;
+}
+
+.status-open {
+  border: 1px solid var(--line);
+  color: var(--text-dim);
+}
+
+/* Scroll-reveal — JS-gated. Without .js-enabled (on <html> or <body>),
+   .reveal elements are fully visible: no-JS users lose nothing. */
+.js-enabled .reveal {
+  opacity: 0;
+  transform: translateY(18px);
+}
+
+.js-enabled .reveal.visible {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .js-enabled .reveal,
+  .js-enabled .reveal.visible {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   4. Header / navigation
+   -------------------------------------------------------------------------- */
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: rgba(20, 20, 20, 0.92); /* fallback when blur unsupported */
+  border-bottom: 1px solid var(--line);
+}
+
+@supports (backdrop-filter: blur(12px)) or (-webkit-backdrop-filter: blur(12px)) {
+  .site-header {
+    background: rgba(20, 20, 20, 0.72);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+  }
+}
+
+.site-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  max-width: var(--container);
+  min-height: var(--header-h);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.nav-logo {
+  font-size: 1.3rem;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  text-decoration: none;
+  color: var(--text);
+}
+
+/* The trailing letter-spacing gap is balanced with a gold tick */
+.nav-logo::after {
+  content: "";
+  display: inline-block;
+  width: 0.42em;
+  height: 0.42em;
+  margin-left: 0.1em;
+  background: var(--gold);
+}
+
+/* Hamburger — pure CSS, 3 bars; hidden without JS (it would be inert) */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.nav-toggle-bar {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: var(--text);
+  transition: transform 0.25s var(--ease-out), opacity 0.2s var(--ease-out);
+}
+
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(2) {
+  opacity: 0;
+}
+
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* Menu — no-JS default: visible, stacked under the logo row on mobile */
+.nav-menu {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+  flex-basis: 100%;
+  padding-block: 1rem 1.25rem;
+  border-top: 1px solid var(--line);
+}
+
+.nav-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nav-link {
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--text-dim);
+  transition: color 0.2s var(--ease-out);
+}
+
+.nav-link:hover,
+.nav-link:focus-visible {
+  color: var(--text);
+}
+
+.site-nav .btn {
+  padding: 0.7em 1.2em;
+  font-size: 0.72rem;
+}
+
+/* JS present → collapse menu on mobile; .nav-open re-opens it.
+   .nav-open may be applied by JS to <body>, .site-header, or .nav-menu. */
+.js-enabled .nav-menu {
+  display: none;
+}
+
+.js-enabled .nav-open .nav-menu,
+.js-enabled.nav-open .nav-menu,
+.js-enabled .nav-menu.nav-open {
+  display: flex;
+}
+
+.js-enabled .nav-toggle {
+  display: flex;
+}
+
+@media (min-width: 720px) {
+  .nav-toggle,
+  .js-enabled .nav-toggle {
+    display: none;
+  }
+
+  .nav-menu,
+  .js-enabled .nav-menu {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1.75rem;
+    flex-basis: auto;
+    padding-block: 0;
+    border-top: 0;
+  }
+
+  .nav-links {
+    flex-direction: row;
+    gap: 1.5rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   5. Hero — engineering grid, registration brackets, stat strip
+   -------------------------------------------------------------------------- */
+.hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 92vh;  /* fallback */
+  min-height: 92svh;
+  padding-top: calc(var(--header-h) + 3rem);
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+/* Fade the grid toward the edges so type sits on calm ground */
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 90% at 50% 35%, transparent 30%, var(--bg) 100%);
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  padding-block: 3rem 4.5rem;
+}
+
+/* Drafting-sheet registration brackets */
+.hero-inner::before,
+.hero-inner::after {
+  content: "";
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--gold-dim);
+  pointer-events: none;
+}
+
+.hero-inner::before {
+  top: 0.75rem;
+  left: var(--gutter);
+  border-right: 0;
+  border-bottom: 0;
+}
+
+.hero-inner::after {
+  bottom: 2rem;
+  right: var(--gutter);
+  border-left: 0;
+  border-top: 0;
+}
+
+.hero-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.9em;
+  margin-bottom: 1.5rem;
+  color: var(--gold);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.hero-eyebrow::before {
+  content: "";
+  flex: none;
+  width: 2rem;
+  height: 1px;
+  background: var(--gold);
+}
+
+.hero-title {
+  max-width: 17ch;
+  font-size: clamp(2.2rem, 6.5vw, 4.5rem);
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.hero-sub {
+  max-width: 56ch;
+  margin-top: 1.75rem;
+  color: var(--text-dim);
+  font-size: clamp(1rem, 1.4vw, 1.125rem);
+}
+
+.hero-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+  margin-top: 2.5rem;
+}
+
+/* Stat strip — ruled top & bottom, thin internal dividers */
+.stat-bar {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr;
+  max-width: var(--container);
+  width: 100%;
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 0.85em;
+  padding: 1.1rem var(--gutter);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.stat-item + .stat-item {
+  border-top: 1px solid var(--line);
+}
+
+.stat-item::before {
+  content: "";
+  flex: none;
+  width: 7px;
+  height: 7px;
+  background: var(--gold);
+}
+
+@media (min-width: 720px) {
+  .stat-bar {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .stat-item {
+    justify-content: center;
+    padding: 1.25rem 1rem;
+    text-align: center;
+  }
+
+  .stat-item + .stat-item {
+    border-top: 0;
+    border-left: 1px solid var(--line);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   6. Section scaffolding — numbered like drawing sheets
+   -------------------------------------------------------------------------- */
+.section {
+  padding-block: clamp(4rem, 10vw, 7rem);
+  border-top: 1px solid var(--line);
+  counter-increment: section;
+}
+
+.section-inner {
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.section-title {
+  margin-bottom: clamp(2rem, 5vw, 3.25rem);
+  font-size: clamp(1.7rem, 3.6vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+
+/* Sheet index: "/ 01" … "/ 06" */
+.section-title::before {
+  content: "/ " counter(section, decimal-leading-zero);
+  display: block;
+  margin-bottom: 0.9rem;
+  color: var(--gold);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+}
+
+.section-intro {
+  max-width: 62ch;
+  margin-top: calc(-1 * clamp(1.25rem, 3vw, 2.25rem));
+  margin-bottom: clamp(2rem, 5vw, 3rem);
+  color: var(--text-dim);
+  font-size: 1.05rem;
+}
+
+.subsection-title {
+  margin-bottom: 1.75rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.section-closing {
+  max-width: 62ch;
+  margin-top: 2.5rem;
+  padding-left: 1.25rem;
+  border-left: 2px solid var(--gold);
+  color: var(--text);
+  font-size: 1.05rem;
+}
+
+/* --------------------------------------------------------------------------
+   7. Capabilities — 01–04 cards with outlined drafting numerals
+   -------------------------------------------------------------------------- */
+.capability-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+
+.capability-card {
+  padding: clamp(1.6rem, 3vw, 2.4rem);
+  background: var(--bg-raised);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  transition: border-color 0.25s var(--ease-out);
+}
+
+.capability-card:hover {
+  border-color: var(--gold-dim);
+}
+
+.card-number {
+  display: block;
+  margin-bottom: 1.4rem;
+  color: var(--gold);
+  font-size: 3.4rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.02em;
+}
+
+/* Hollow numerals that fill with gold on hover (engineering-stencil feel) */
+@supports (-webkit-text-stroke: 1px black) {
+  .card-number {
+    -webkit-text-stroke: 1px var(--gold);
+    -webkit-text-fill-color: transparent;
+    transition: -webkit-text-fill-color 0.3s var(--ease-out);
+  }
+
+  .capability-card:hover .card-number {
+    -webkit-text-fill-color: var(--gold);
+  }
+}
+
+.card-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.card-text {
+  margin-top: 0.7rem;
+  color: var(--text-dim);
+  font-size: 0.95rem;
+}
+
+@media (min-width: 720px) {
+  .capability-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   8. Why thermoforming — process steps + comparison table
+   -------------------------------------------------------------------------- */
+
+/* Process steps: CSS counters supply the gold 01–04; connectors via ::after */
+.process-steps {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.6rem;
+  margin-bottom: clamp(3rem, 7vw, 4.5rem);
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+
+.process-step {
+  position: relative;
+  padding-left: 4.25rem;
+  counter-increment: step;
+}
+
+.process-step::before {
+  content: counter(step, decimal-leading-zero);
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: var(--gold);
+  font-size: 1.6rem;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+}
+
+/* Vertical connector (mobile) */
+.process-step:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 2.4rem;
+  bottom: -1.6rem; /* spans the grid gap */
+  left: 1.15rem;
+  width: 1px;
+  background: linear-gradient(var(--gold-dim), var(--line));
+}
+
+.process-step-name {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.process-step-desc {
+  display: block;
+  margin-top: 0.3rem;
+  max-width: 30ch;
+  color: var(--text-dim);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+@media (min-width: 720px) {
+  .process-steps {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+  }
+
+  .process-step {
+    padding-left: 0;
+    padding-top: 3.1rem;
+  }
+
+  .process-step::before {
+    font-size: 1.9rem;
+  }
+
+  /* Horizontal connector across the grid gap */
+  .process-step:not(:last-child)::after {
+    top: 1.1rem;
+    bottom: auto;
+    left: 3.6rem;
+    right: -2rem; /* spans the grid gap */
+    width: auto;
+    height: 1px;
+    background: linear-gradient(90deg, var(--gold-dim), var(--line));
+  }
+}
+
+/* Comparison table — mobile-first: each row becomes a stacked card */
+.compare-table-wrap {
+  margin-top: 0.5rem;
+}
+
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.compare-caption {
+  margin-bottom: 1.5rem;
+  text-align: left;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+@media (max-width: 719.98px) {
+  .compare-table,
+  .compare-caption,
+  .compare-table tbody,
+  .compare-table tr,
+  .compare-table th,
+  .compare-table td {
+    display: block;
+  }
+
+  /* Keep column headers for AT; hide visually (table semantics are
+     already linearized at this width) */
+  .compare-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+  }
+
+  .compare-table tbody tr {
+    margin-bottom: 1rem;
+    background: var(--bg-raised);
+    border: 1px solid var(--line);
+    border-radius: 2px;
+  }
+
+  .compare-table th[scope="row"] {
+    padding: 0.9rem 1.1rem;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .compare-table td {
+    padding: 0.85rem 1.1rem;
+    font-size: 0.92rem;
+    color: var(--text);
+  }
+
+  .compare-table td::before {
+    display: block;
+    margin-bottom: 0.3rem;
+    font-size: 0.66rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  /* Labels mirror the (visually hidden) column headers */
+  .compare-table td:nth-of-type(1) {
+    border-left: 2px solid var(--gold);
+  }
+
+  .compare-table td:nth-of-type(1)::before {
+    content: "Vacuum thermoforming";
+    color: var(--gold);
+  }
+
+  .compare-table td:nth-of-type(2) {
+    border-top: 1px solid var(--line);
+  }
+
+  .compare-table td:nth-of-type(2)::before {
+    content: "Injection molding";
+  }
+}
+
+@media (min-width: 720px) {
+  .compare-table-wrap {
+    overflow-x: auto; /* safety only; table fits its container */
+  }
+
+  .compare-table th,
+  .compare-table td {
+    padding: 1.1rem 1.4rem;
+    text-align: left;
+    vertical-align: top;
+    border-bottom: 1px solid var(--line);
+    font-size: 0.95rem;
+  }
+
+  .compare-table thead th {
+    border-bottom: 1px solid #3a3a3a;
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  .compare-table thead th:nth-child(2) {
+    color: var(--gold);
+  }
+
+  .compare-table tbody th[scope="row"] {
+    width: 22%;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .compare-table tbody td {
+    color: var(--text-dim);
+    width: 39%;
+  }
+
+  .compare-table tbody tr:nth-child(even) {
+    background: var(--bg-raised);
+  }
+
+  /* Subtly favor the thermoforming column */
+  .compare-table tbody td:nth-of-type(1) {
+    border-left: 2px solid var(--gold);
+    background: rgba(240, 181, 68, 0.04);
+    color: var(--text);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   9. R&D direction — pipeline cards (dashed = not-yet-solid offering)
+   -------------------------------------------------------------------------- */
+.rd-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.1rem;
+}
+
+.rd-card {
+  padding: 1.5rem 1.6rem;
+  background: transparent;
+  border: 1px dashed #3a3a3a;
+  border-radius: 2px;
+  transition: border-color 0.25s var(--ease-out);
+}
+
+.rd-card:hover {
+  border-color: var(--gold-dim);
+}
+
+.rd-card .status-tag {
+  margin-bottom: 1.1rem;
+}
+
+.rd-card .card-title {
+  font-size: 1.05rem;
+}
+
+.rd-card .card-text {
+  margin-top: 0.4rem;
+  font-size: 0.9rem;
+}
+
+.rd-cta {
+  margin-top: 2.5rem;
+  color: var(--text-dim);
+  font-size: 1rem;
+}
+
+.rd-cta-link {
+  color: var(--gold);
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1px solid var(--gold-dim);
+  transition: border-color 0.2s var(--ease-out);
+}
+
+.rd-cta-link:hover {
+  border-bottom-color: var(--gold);
+}
+
+@media (min-width: 720px) {
+  .rd-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .rd-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   10. Industries — 5 tiles
+   -------------------------------------------------------------------------- */
+.industry-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.1rem;
+}
+
+.industry-card {
+  padding: 1.6rem;
+  background: var(--bg-raised);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  transition: border-color 0.25s var(--ease-out);
+}
+
+.industry-card:hover {
+  border-color: var(--gold-dim);
+}
+
+.industry-card .status-tag {
+  margin-bottom: 1.1rem;
+}
+
+.industry-card .card-title {
+  font-size: 1.05rem;
+}
+
+.industry-card .card-text {
+  margin-top: 0.4rem;
+  font-size: 0.9rem;
+}
+
+@media (min-width: 720px) {
+  .industry-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .industry-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   11. About — timeline + certification chips
+   -------------------------------------------------------------------------- */
+.timeline {
+  position: relative;
+  max-width: 640px;
+  padding: 0;
+  list-style: none;
+}
+
+.timeline::before {
+  content: "";
+  position: absolute;
+  top: 6px;
+  bottom: 6px;
+  left: 5px;
+  width: 1px;
+  background: linear-gradient(var(--gold), var(--line));
+}
+
+.timeline-node {
+  position: relative;
+  padding-left: 2.4rem;
+  padding-bottom: 2.4rem;
+}
+
+.timeline-node:last-child {
+  padding-bottom: 0.5rem;
+}
+
+/* Square node markers — drafting datum points, not soft dots */
+.timeline-node::before {
+  content: "";
+  position: absolute;
+  top: 0.42em;
+  left: 0;
+  width: 11px;
+  height: 11px;
+  background: var(--bg);
+  border: 2px solid var(--gold);
+}
+
+.timeline-year {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: var(--gold);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.timeline-text {
+  max-width: 50ch;
+  color: var(--text-dim);
+}
+
+.cert-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+  margin-top: 3rem;
+}
+
+.cert-badge {
+  display: inline-block;
+  padding: 0.75em 1.3em;
+  border: 1px solid var(--line);
+  border-left: 2px solid var(--gold);
+  border-radius: 2px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+/* --------------------------------------------------------------------------
+   12. Contact
+   -------------------------------------------------------------------------- */
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+}
+
+.contact-details {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.6rem;
+  align-content: start;
+}
+
+.contact-email {
+  justify-self: start;
+  color: var(--gold);
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+  text-decoration: none;
+  overflow-wrap: anywhere; /* never overflow at 375px */
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.2s var(--ease-out);
+}
+
+.contact-email:hover {
+  border-bottom-color: var(--gold);
+}
+
+.contact-tel {
+  justify-self: start;
+  color: var(--text);
+  font-size: 1.1rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+}
+
+.contact-tel:hover {
+  color: var(--gold);
+}
+
+.contact-address-title {
+  margin-bottom: 0.5rem;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.contact-address-text {
+  max-width: 36ch;
+  color: var(--text-dim);
+  font-style: normal;
+  font-size: 0.92rem;
+  line-height: 1.7;
+}
+
+.map-embed {
+  display: block;
+  width: 100%;
+  height: clamp(320px, 45vw, 460px);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  /* Blend with the dark theme but keep it readable */
+  filter: grayscale(0.35) contrast(0.92) brightness(0.95);
+}
+
+@media (min-width: 720px) {
+  .contact-details {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .contact-email,
+  .contact-tel {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 1024px) {
+  .contact-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   13. Footer
+   -------------------------------------------------------------------------- */
+.site-footer {
+  border-top: 1px solid var(--line);
+  padding-block: 2.25rem;
+}
+
+.footer-text {
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  color: var(--text-dim);
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+}
