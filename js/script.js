@@ -118,7 +118,7 @@ document.documentElement.classList.add('js-enabled');
         });
         updateActiveLink();
       },
-      // A section is "in view" when it occupies at least 20% of the viewport
+      // A section counts as "in view" once 20% of its own height is visible
       { threshold: 0.2 }
     );
 

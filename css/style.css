@@ -353,6 +353,12 @@ main:focus {
   color: var(--text);
 }
 
+/* Reserve underline space so .active causes no layout shift */
+.site-nav .nav-menu a {
+  border-bottom: 1px solid transparent;
+  padding-bottom: 1px;
+}
+
 /* Active section indicator — mirrors hover color + adds gold underline */
 .site-nav .nav-menu a.active {
   color: var(--text);
