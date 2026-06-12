@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <!-- Gate class added pre-CSS so first paint matches JS-enabled layout (prevents CLS); no-JS browsers skip it and get the static fallback -->
+  <script>document.documentElement.classList.add('js-enabled');</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SNVH — Tier-1 Vacuum Thermoforming Supplier, Thailand</title>
   <meta name="description" content="Tier-1 vacuum thermoforming supplier for Thailand's automotive industry. Large-part thermoforming, build-to-print, IATF 16949 certified. Pathum Thani, Thailand.">
