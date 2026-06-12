@@ -13,6 +13,8 @@
   --bg: #141414;          /* page background */
   --bg-raised: #1d1d1d;   /* cards */
   --line: #2a2a2a;        /* borders, dividers, grid lines */
+  --line-strong: #3a3a3a; /* emphasized borders: thead, dashed cards, secondary btn */
+  --text-on-gold: #141414; /* dark text on gold surfaces */
   --gold: #F0B544;        /* accent: CTAs, numbers, eyebrows, tags */
   --gold-bright: #f7c768; /* hover state of gold surfaces */
   --gold-dim: rgba(240, 181, 68, 0.45);
@@ -112,7 +114,7 @@ main:focus {
   z-index: 1000; /* above .site-header (z-index: 100) */
   padding: 0.8em 1.4em;
   background: var(--gold);
-  color: #141414;
+  color: var(--text-on-gold);
   font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -153,7 +155,7 @@ main:focus {
 .btn-primary {
   background: var(--gold);
   border-color: var(--gold);
-  color: #141414;
+  color: var(--text-on-gold);
 }
 
 .btn-primary:hover {
@@ -162,7 +164,7 @@ main:focus {
 }
 
 .btn-secondary {
-  border-color: #3a3a3a;
+  border-color: var(--line-strong);
   color: var(--text);
 }
 
@@ -190,7 +192,7 @@ main:focus {
 
 .status-proven {
   background: var(--gold);
-  color: #141414;
+  color: var(--text-on-gold);
 }
 
 .status-open {
@@ -873,7 +875,7 @@ main:focus {
   }
 
   .compare-table td:nth-of-type(1)::before {
-    content: "Vacuum thermoforming";
+    content: attr(data-label);
     color: var(--gold);
   }
 
@@ -882,7 +884,7 @@ main:focus {
   }
 
   .compare-table td:nth-of-type(2)::before {
-    content: "Injection molding";
+    content: attr(data-label);
   }
 }
 
@@ -901,7 +903,7 @@ main:focus {
   }
 
   .compare-table thead th {
-    border-bottom: 1px solid #3a3a3a;
+    border-bottom: 1px solid var(--line-strong);
     font-size: 0.74rem;
     font-weight: 700;
     letter-spacing: 0.18em;
@@ -948,7 +950,7 @@ main:focus {
 .rd-card {
   padding: 1.5rem 1.6rem;
   background: transparent;
-  border: 1px dashed #3a3a3a;
+  border: 1px dashed var(--line-strong);
   border-radius: 2px;
   transition: border-color 0.25s var(--ease-out);
 }
